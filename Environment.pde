@@ -1,17 +1,67 @@
 boolean wkey, akey, skey, dkey;
-
+float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 
 void setup () {
   size ( 800, 600, P3D);
   textureMode ( NORMAL);
   wkey=akey=skey=dkey =false;
+  eyeX = width/2;
+  eyeY = height/2;
+  eyeZ = 0 ;
+  focusX= width/2;
+  focusY = height/2;
+  focusZ =10;
+  tiltX =0;
+  tiltY =1;
+  tiltZ= 0;
 }
 
 
 void draw () {
   background (0);
+   camera( eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ);
   drawFloor();
+  drawFocalPoint();
   controlCamera();
+}
+
+void drawFocalPoint() {
+  pushMatrix();
+  translate ( focusX, focusY, focusZ);
+  sphere(5);
+
+
+
+
+
+  popMatrix();
+}
+
+
+void drawFloor() {
+  background(0);
+  stroke ( 255);
+
+  for (int x = -2000; x  <= 2000; x=x+100) {
+
+    line ( x, height, -2000, x, height, 2000);
+    line ( -2000, height, x, 2000, height, x );
+  }
+}
+
+
+void controlCamera() {
+ 
+  if ( wkey)eyeZ= eyeZ -10;
+  if ( skey)eyeZ= eyeZ +10;
+  if ( akey)eyeX= eyeX-10;
+  if ( dkey)eyeX= eyeX +10;
+
+  focusX = eyeX;
+  focusY = eyeY;
+  focusZ = eyeZ -500;
+
+  println ( eyeX, eyeY, eyeZ);
 }
 
 
