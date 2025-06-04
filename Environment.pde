@@ -2,16 +2,25 @@ import java.awt.Robot;
 
 
 Robot rbt;
-
+boolean skipFrame;
 
 boolean wkey, akey, skey, dkey;
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 float leftRightHeadAngle, upDownHeadAngle;
 
+color black = #000000;
+color white = #FFFFFF;
+
+//map varibales
+int gridSize;
+PImage map;
+PImage stone; 
 
 
 void setup () {
-fullScreen(P3D);
+  
+  stone = loadImage("Stone_Bricks.png");
+  fullScreen(P3D);
   textureMode (NORMAL);
   wkey=akey=skey=dkey =false;
   eyeX = width/2;
@@ -25,15 +34,19 @@ fullScreen(P3D);
   tiltZ= 0;
   leftRightHeadAngle = radians(270);
   noCursor();
-  
-  try{
-    
+
+  try {
+
     rbt=new Robot();
   }
-  catch(Exception e){
-   e.printStackTrace(); 
-    
+  catch(Exception e) {
+    e.printStackTrace();
   }
+
+
+  //initialize map
+  map = loadImage("map.png");
+  gridSize = 100;
 }
 
 
@@ -43,18 +56,30 @@ void draw () {
   drawFloor();
   drawFocalPoint();
   controlCamera();
+  drawMap();
 }
 
 void drawFocalPoint() {
   pushMatrix();
   translate ( focusX, focusY, focusZ);
   sphere(5);
-
+   
 
 
 
 
   popMatrix();
+}
+
+void drawMap () {
+  for (int x = 0; x < map.width; x++) {
+    for (int y = 0; y < map.height; y++) {
+      color c = map.get(x, y);
+      if ( c != white) {
+        
+      }
+    }
+  }
 }
 
 
@@ -87,18 +112,19 @@ void controlCamera() {
 
     eyeX = eyeX - cos(leftRightHeadAngle+PI/2)*10;
     eyeZ= eyeZ  - sin(leftRightHeadAngle+PI/2)*10;
-    
-    
   }
   if ( dkey) {
 
 
-   eyeX = eyeX - cos(leftRightHeadAngle-PI/2)*10;
+    eyeX = eyeX - cos(leftRightHeadAngle-PI/2)*10;
     eyeZ= eyeZ  - sin(leftRightHeadAngle-PI/2)*10;
   }
 
-  leftRightHeadAngle = leftRightHeadAngle+ (mouseX -pmouseX)*0.01;
-  upDownHeadAngle = upDownHeadAngle + ( mouseY -pmouseY)*0.01;
+  if ( skipFrame== false) {
+
+    leftRightHeadAngle = leftRightHeadAngle+ (mouseX -pmouseX)*0.01;
+    upDownHeadAngle = upDownHeadAngle + ( mouseY -pmouseY)*0.01;
+  }
   if (upDownHeadAngle>PI/2.5) upDownHeadAngle =PI/2.5;
 
   focusX = eyeX+cos(leftRightHeadAngle)*300;
@@ -107,9 +133,16 @@ void controlCamera() {
 
   focusY = eyeY+tan(upDownHeadAngle)*300;
 
-if ( mouseX > width-2 ) rbt.mouseMove(3, mouseY); 
-else if ( mouseX<2) rbt.mouseMove(width-3, mouseY); 
 
+  if ( mouseX<2) {
+    rbt.mouseMove(width-3, mouseY);
+    skipFrame = true;
+  } else if ( mouseX > width-2 ) {
+    rbt.mouseMove(3, mouseY);
+    skipFrame = true;
+  } else {
+    skipFrame = false;
+  }
 
   println ( eyeX, eyeY, eyeZ);
 }
