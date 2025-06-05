@@ -8,23 +8,28 @@ boolean wkey, akey, skey, dkey;
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 float leftRightHeadAngle, upDownHeadAngle;
 
-color black = #000000;
-color white = #FFFFFF;
+color black = #000000;//stone bricks
+color white = #FFFFFF;//empty
+color lblue = #99D9EA;//dirt
 
 //map varibales
 int gridSize;
 PImage map;
-PImage stone; 
+PImage stone;
+PImage dirt;
+
 
 
 void setup () {
-  
-  stone = loadImage("Stone_Bricks.png");
+
+
   fullScreen(P3D);
   textureMode (NORMAL);
+  stone = loadImage("Stone_Bricks.png");
+  dirt = loadImage ("Dirt.png");
   wkey=akey=skey=dkey =false;
   eyeX = width/2;
-  eyeY = height/2;
+  eyeY = 9*height/10;
   eyeZ = 0 ;
   focusX= width/2;
   focusY = height/2;
@@ -53,7 +58,8 @@ void setup () {
 void draw () {
   background (0);
   camera( eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ);
-  drawFloor();
+  drawFloor(-2000, 2000, height , gridSize);
+  drawFloor ( -2000 , 2000, height -gridSize*3 , gridSize); 
   drawFocalPoint();
   controlCamera();
   drawMap();
@@ -63,7 +69,7 @@ void drawFocalPoint() {
   pushMatrix();
   translate ( focusX, focusY, focusZ);
   sphere(5);
-   
+
 
 
 
@@ -75,7 +81,17 @@ void drawMap () {
   for (int x = 0; x < map.width; x++) {
     for (int y = 0; y < map.height; y++) {
       color c = map.get(x, y);
-      if ( c != white) {
+      if ( c == black) {
+
+        texturedCube( x*gridSize-2000, height-gridSize, y*gridSize-2000, stone, gridSize);
+        texturedCube( x*gridSize-2000, height-gridSize*2, y*gridSize-2000, stone, gridSize);
+        texturedCube( x*gridSize-2000, height-gridSize*3, y*gridSize-2000, stone, gridSize);
+      }
+      if ( c ==lblue){
+        texturedCube( x*gridSize-2000, height-gridSize, y*gridSize-2000, dirt, gridSize);
+        texturedCube( x*gridSize-2000, height-gridSize*2, y*gridSize-2000, dirt, gridSize);
+        texturedCube( x*gridSize-2000, height-gridSize*3, y*gridSize-2000,dirt, gridSize);
+        
         
       }
     }
@@ -83,14 +99,21 @@ void drawMap () {
 }
 
 
-void drawFloor() {
+void drawFloor(int start, int end , int level ,int gap) {
   background(0);
   stroke ( 255);
+  strokeWeight ( 1) ; 
+  int x = start; 
+  int z = start;
 
-  for (int x = -2000; x  <= 2000; x=x+100) {
+  while(x<end) {
 
-    line ( x, height, -2000, x, height, 2000);
-    line ( -2000, height, x, 2000, height, x );
+   texturedCube ( x , level , z , dirt , gap); 
+    x=x+gap; 
+    if ( x>=end){
+      x=start; 
+    z = z+ gap;
+    }
   }
 }
 

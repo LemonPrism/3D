@@ -1,21 +1,11 @@
 void texturedCube(float x , float y , float z , PImage texture, float size){
 
 
-  pushMatrix ();
 
+pushMatrix();
   noStroke();
-  translate (width/2, height/2, 0 );
-  scale (100);
-
-  //box (1);
-
-
-
-
-
-  //shape 2
-  pushMatrix();
-   scale (100);
+  translate (x , y , z );
+  scale (size);
 
   beginShape(QUADS);
   texture(texture);
