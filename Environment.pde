@@ -20,6 +20,7 @@ PImage dirt;
 
 
 
+
 void setup () {
 
 
@@ -38,6 +39,7 @@ void setup () {
   tiltY =1;
   tiltZ= 0;
   leftRightHeadAngle = radians(270);
+  gridSize = 100;
   noCursor();
 
   try {
@@ -51,15 +53,15 @@ void setup () {
 
   //initialize map
   map = loadImage("map.png");
-  gridSize = 100;
 }
 
 
 void draw () {
   background (0);
+  pointLight( 255, 255, 255, eyeX, eyeY , eyeZ);
   camera( eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ);
-  drawFloor(-2000, 2000, height , gridSize);
-  drawFloor ( -2000 , 2000, height -gridSize*3 , gridSize); 
+  drawFloor(-2000, 2000, height, gridSize);
+  drawFloor (-2000, 2000, height -gridSize*4, gridSize);
   drawFocalPoint();
   controlCamera();
   drawMap();
@@ -87,34 +89,32 @@ void drawMap () {
         texturedCube( x*gridSize-2000, height-gridSize*2, y*gridSize-2000, stone, gridSize);
         texturedCube( x*gridSize-2000, height-gridSize*3, y*gridSize-2000, stone, gridSize);
       }
-      if ( c ==lblue){
+      if ( c ==lblue) {
         texturedCube( x*gridSize-2000, height-gridSize, y*gridSize-2000, dirt, gridSize);
         texturedCube( x*gridSize-2000, height-gridSize*2, y*gridSize-2000, dirt, gridSize);
-        texturedCube( x*gridSize-2000, height-gridSize*3, y*gridSize-2000,dirt, gridSize);
-        
-        
+        texturedCube( x*gridSize-2000, height-gridSize*3, y*gridSize-2000, dirt, gridSize);
       }
     }
   }
 }
 
 
-void drawFloor(int start, int end , int level ,int gap) {
-  background(0);
-  stroke ( 255);
-  strokeWeight ( 1) ; 
-  int x = start; 
+void drawFloor(int start, int end, int level, int gap) {
+  //background(0);
+  stroke (255);
+  strokeWeight ( 1) ;
+  int x = start;
   int z = start;
 
-  while(x<end) {
-
-   texturedCube ( x , level , z , dirt , gap); 
-    x=x+gap; 
-    if ( x>=end){
-      x=start; 
-    z = z+ gap;
+  while (z<end) {
+    texturedCube ( x, level, z, dirt, gap);
+    x=x+gap;
+    if ( x>=end) {
+      x=start;
+      z = z+ gap;
     }
   }
+
 }
 
 
@@ -167,7 +167,13 @@ void controlCamera() {
     skipFrame = false;
   }
 
-  println ( eyeX, eyeY, eyeZ);
+  //println ( eyeX, eyeY, eyeZ);
+}
+
+boolean canMoveForward(){
+  float fwdx, fwdy , fwdz; 
+  
+  
 }
 
 
