@@ -4,7 +4,7 @@ import java.awt.Robot;
 Robot rbt;
 boolean skipFrame;
 
-boolean wkey, akey, skey, dkey;
+boolean wkey, akey, skey, dkey,spacekey;
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 float leftRightHeadAngle, upDownHeadAngle;
 
@@ -87,6 +87,12 @@ void draw () {
      i++;
     }
     
+    
+    if(spacekey){
+      objects.add( new Bullet());
+      
+      
+    }
     
     
     

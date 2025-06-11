@@ -17,7 +17,7 @@ class GameObject{
  
  GameObject ( float x , float y , float z , float s ){
   lives = 1 ; 
-  loc = new PVector ( x , y , z); 
+  loc = new PVector( x , y , z); 
   size= s; 
    
  }
