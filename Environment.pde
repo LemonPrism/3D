@@ -4,7 +4,7 @@ import java.awt.Robot;
 Robot rbt;
 boolean skipFrame;
 
-boolean wkey, akey, skey, dkey,spacekey;
+boolean wkey, akey, skey, dkey, spacekey;
 float eyeX, eyeY, eyeZ, focusX, focusY, focusZ, tiltX, tiltY, tiltZ;
 float leftRightHeadAngle, upDownHeadAngle;
 
@@ -19,9 +19,9 @@ PImage stone;
 PImage dirt;
 
 
-//gameobjects 
+//gameobjects
 
-ArrayList<GameObject> objects; 
+ArrayList<GameObject> objects;
 
 
 
@@ -60,7 +60,6 @@ void setup () {
 
   //initialize map
   map = loadImage("map.png");
-  
 }
 
 
@@ -73,28 +72,32 @@ void draw () {
   drawFocalPoint();
   controlCamera();
   drawMap();
-  
-  int i = 0 ; 
-  while ( i< objects.size()){
-    GameObject obj = objects.get(i); 
-    obj.act(); 
-    obj.show(); 
-    if ( obj.lives==0){
-      obj.act(); 
-      obj.show();
-      
-    }else {
-     i++;
+
+
+  for (int i = objects.size() - 1; i >= 0; i--) {
+    GameObject obj = objects.get(i);
+    obj.act();
+    obj.show();
+    if (obj.lives <= 0) {
+      objects.remove(i);
     }
-    
-    
-    if(spacekey){
-      objects.add( new Bullet());
-      
-      
+  }
+
+
+  int i = 0;
+  while (i < objects.size()) {
+    GameObject obj = objects.get(i);
+    obj.act();
+    obj.show();
+    if (obj.lives <= 0) {
+      objects.remove(i);
+    } else {
+      i++;
     }
-    
-    
-    
+  }
+
+
+  if (spacekey) {
+    objects.add(new Bullet());
   }
 }
